@@ -1,0 +1,100 @@
+print("Ecuatie la indemana: a*(b-x/y/z)*t+n*(m*c)+j")
+ecuatie=input("Introduceti ecuatia: ")
+#ecuatie="a*(b-x/y/z)*t+n*(m*c)+j"
+Lista=[]
+for i in ecuatie:
+    Lista.append(i)
+
+simboluri={}
+simboluri["("]=0
+simboluri[")"]=0
+simboluri["-"]=1
+simboluri["+"]=1
+simboluri["*"]=2
+simboluri["/"]=2
+simboluri["^"]=3
+
+stivaVal=[]
+stivaSim=[]
+stivaFinala=[]
+lung=len(Lista)-1
+sim=False
+k=0
+paranteze=False
+while(k<=lung):
+    for i in simboluri:
+        if(Lista[k]=="("):
+            paranteze=True
+        if (Lista[k] == ")"):
+            paranteze = False
+        if(i==Lista[k]):
+            stivaSim.append(i)
+            stivaVal.append(simboluri[i])
+            sim=True
+            break
+    if(sim==False):
+        stivaFinala.append(Lista[k])
+    if(len(stivaSim)>1):
+        if(stivaSim[len(stivaSim)-1]==")"):
+            stivaSim.pop(len(stivaSim) - 1)
+            stivaVal.pop(len(stivaVal) - 1)
+            while(stivaSim[len(stivaSim)-1]!="("):
+                stivaFinala.append(stivaSim[len(stivaSim)-1])
+                stivaSim.pop(len(stivaSim) - 1)
+                stivaVal.pop(len(stivaVal) - 1)
+            stivaSim.pop(len(stivaSim) - 1)
+            stivaVal.pop(len(stivaVal) - 1)
+        if(len(stivaVal)>1):
+            while stivaVal[len(stivaVal)-1]<=stivaVal[len(stivaVal)-2] and  stivaVal[len(stivaVal)-1]!=0:
+                stivaFinala.append(stivaSim[len(stivaSim)-2])
+                stivaSim.pop(len(stivaSim)-2)
+                stivaVal.pop(len(stivaVal)-2)
+                if (len(stivaVal) <= 1):
+                    break
+
+
+    k=k+1
+    sim=False
+while(len(stivaVal)>0):
+    stivaFinala.append(stivaSim[len(stivaSim)-1])
+    stivaSim.pop(len(stivaSim) - 1)
+    stivaVal.pop(len(stivaVal) - 1)
+
+print("Sir polonez :")
+print(stivaFinala)
+
+print("Sir polonez-> sir normal pe pasi:")
+
+cop=stivaFinala[:]
+stiva=[]
+
+lung=len(cop)-1
+k=0
+sem=False
+ok=0
+while(k<=lung):
+    for i in simboluri:
+        if(cop[k]==i):
+            if(ok==1):
+                if(simboluri[i]>=simboluri[copElem]):
+                     stiva[len(stiva)-1]= "("+stiva[len(stiva)-1]+")"
+                     print(stiva)
+            stiva[len(stiva)-2]=stiva[len(stiva)-2]+i+stiva[len(stiva)-1]
+            stiva.pop(len(stiva)-1)
+
+            copElem=i
+            ok=1
+
+            sem=True
+            print(stiva)
+
+    if(sem==False):
+        ok=0
+        stiva.append(cop[k])
+        print(stiva)
+    k=k+1
+    sem=False
+
+
+print("Sir final:")
+print(stiva)

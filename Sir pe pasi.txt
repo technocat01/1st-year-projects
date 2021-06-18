@@ -1,0 +1,77 @@
+print("Ecuatie la indemana: a*(((d-(b-x)*t)*c)*t)*d+(m*n))")
+ecuatie=input("Introduceti ecuatia: ")
+print("Ecuatia pe pasi:")
+Lista=[]
+Lista.append("#")
+for i in ecuatie:
+    Lista.append(i)
+Lista.append("#")
+simboluri={}
+simboluri["#"]=0
+simboluri["-"]=1
+simboluri["+"]=1
+simboluri["*"]=2
+simboluri["/"]=2
+simboluri["^"]=3
+
+
+stiva=[]
+stivaVal=[]
+stivaFinala=[]
+lung=len(Lista)-1
+k=0
+nur=0
+da=0
+par=1
+sim=False
+paranteze=False
+stop=False
+while(k<=lung):
+    if(stop==True):
+        break
+    for i in simboluri:
+        if(Lista[k]=="("):
+            paranteze=True
+            par=par+1
+            break
+        if (Lista[k] == ")"):
+            par=par-1
+            if(par==1):
+               paranteze = False
+            break
+        if(i==Lista[k]):
+            sim=True
+            stiva.append(i)
+            if(paranteze==False):
+                stivaVal.append(simboluri[i])
+            else:
+                stivaVal.append(simboluri[i]+10*par)
+            break
+    if(sim==False and Lista[k]!="(" and Lista[k]!=")"):
+        stivaFinala.append(Lista[k])
+        print(stivaFinala)
+    if(len(stivaVal)>1):
+        numaram=0
+        while(stivaVal[len(stivaVal)-1]<=stivaVal[len(stivaVal)-2]):
+            if(numaram==0):
+               print(stivaFinala)
+            if stivaVal[len(stivaVal)-2]-stivaVal[len(stivaVal)-1]>5:
+                if(len(stivaVal)>2):
+                    if(stivaVal[len(stivaVal)-2]-stivaVal[len(stivaVal)-3]>5):
+                        da=1
+            numaram=numaram+1
+            stivaVal.pop(len(stivaVal) - 2)
+            stivaFinala[len(stivaFinala)-2]=stivaFinala[len(stivaFinala)-2]+stiva[len(stiva)-2]
+            stivaFinala[len(stivaFinala)-2]=stivaFinala[len(stivaFinala)-2]+stivaFinala[len(stivaFinala)-1]
+            stivaFinala.pop(len(stivaFinala)-1)
+            stiva.pop(len(stiva)-2)
+            print(stivaFinala)
+            if(da==1):
+                stivaFinala[len(stivaFinala) - 1] ="("+stivaFinala[len(stivaFinala) - 1]+")"
+                da=0
+            if(stiva[len(stivaVal)-1]=='#' and stiva[len(stivaVal)-2]=="#"):
+                stop=True
+                break
+
+    sim=False
+    k=k+1
